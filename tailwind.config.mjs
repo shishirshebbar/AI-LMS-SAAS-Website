@@ -19,13 +19,15 @@ export default {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
-  			primary: {
-				DEFAULT: 'hsl(210, 50%, 50%)', // medium blue
-				foreground: 'hsl(210, 50%, 90%)' // light foreground for readability
+  			primary: 
+			  {
+				DEFAULT: 'mediumblue', // Medium blue color
+				foreground: 'hsl(0, 0%, 90%)' // Light blue for foreground text
 			  },
+			  
 			  secondary: {
-				DEFAULT: 'hsl(0, 0%, 50%)', // medium grey
-				foreground: 'hsl(0, 0%, 90%)' // light foreground for readability
+				DEFAULT: 'lightgrey', // Light grey color
+				foreground: 'hsl(0, 0%, 20%)' // Darker grey for foreground text
 			  },
 			  
   			muted: {

@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -24,10 +25,11 @@ export default function Home() {
         <p className="text-lg font-medium mb-6 drop-shadow-sm">
           Revolutionizing education with AI-powered personalized learning.
         </p>
-        <Button onClick={onclick} className="px-6 py-3 text-lg font-semibold bg-white text-red-600 rounded-lg shadow-lg hover:bg-gray-100 hover:text-orange-600 transition duration-300">
+        <Link href={'/Dashboard'}>
+        <Button  className="px-6 py-3 text-lg font-semibold bg-white text-red-600 rounded-lg shadow-lg hover:bg-gray-100 hover:text-orange-600 transition duration-300">
           Start Now
         </Button>
-        <UserButton/>
+        </Link>
       </div>
     </div>
   );
