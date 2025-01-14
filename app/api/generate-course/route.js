@@ -1,3 +1,4 @@
+import { inngest } from "@/inngest/client";
 import { db } from "@/utils/database";
 import { STUDY_MATERIAL } from "@/utils/dbschema";
 import { chatSession } from "@/utils/GeminiAI";
@@ -19,8 +20,8 @@ export async function POST(req) {
     //generate course
     const userprompt = 
         `Generate a study material for ${topic} for ${courseType} ` +
-        `having ${difficultyLevel} level of difficulty with a short summary of each course, ` +
-        `list of chapters along with summary for each course, topic list in JSON format`;
+        `having ${difficultyLevel} level of difficulty with a short summary of each chapter(let it contain chapter_title,summary,topics(it need not contain sub fields)), ` +
+        `let it contain course_title,difficulty,summary and chapters..let it be  in JSON format`;
 
     let geminiresponse;
     try {
@@ -43,14 +44,29 @@ export async function POST(req) {
             courseType,
             createdBy,
             topic,
+            difficultyLevel,
             courseLayout: result,
         }).returning({resp:STUDY_MATERIAL});
     } catch (error) {
         return NextResponse.json({ error: "Error saving to database", details: error.message }, { status: 500 });
     }
 
+    //trigger inngest to generate notes
+    const inngestresult = await inngest.send({
+        name:'notes.generate',
+        data:{
+            course:databaseresult[0].resp
+        }
+    });
+    console.log(inngestresult);
+
+
     return NextResponse.json({ success: true, result: databaseresult[0] });
 }
+
+
+
+
 
 // import { db } from "@/utils/database";
 // import { STUDY_MATERIAL } from "@/utils/dbschema";

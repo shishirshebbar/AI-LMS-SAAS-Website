@@ -3,6 +3,7 @@ import "./globals.css";
 import { Roboto } from "next/font/google"; 
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./Provider";
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -22,7 +23,7 @@ export default function RootLayout({ children }) {
        <Provider>
         {children}
         </Provider>
-        
+        <Toaster/>
       </body>
     </html>
     </ClerkProvider>

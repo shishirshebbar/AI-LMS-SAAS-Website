@@ -8,10 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { useUser } from '@clerk/nextjs';
 import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useToast } from "@/hooks/use-toast"
+
 
 
 
 function page() {
+    const { toast } = useToast()
     const [stage,setstage]=useState(0);
     const [formdata,setformdata] = useState([]);
     const {user} = useUser();
@@ -37,6 +40,10 @@ function page() {
             });
             setloading(false);
             router.replace('/Dashboard');
+            toast({
+                description: "Study material is generating,click on refresh button",
+              })
+          
             console.log(result.data.result.resp);
        
             

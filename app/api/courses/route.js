@@ -1,7 +1,7 @@
 import { db } from "@/utils/database";
 import { STUDY_MATERIAL } from "@/utils/dbschema";
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";  // Make sure to import eq if using Drizzle ORM
+import { desc, eq } from "drizzle-orm";  // Make sure to import eq if using Drizzle ORM
 
 export async function POST(req) {
     try {
@@ -15,7 +15,8 @@ export async function POST(req) {
 
       
         const result = await db.select().from(STUDY_MATERIAL)
-            .where(eq(STUDY_MATERIAL.createdBy, createdBy));
+            .where(eq(STUDY_MATERIAL.createdBy, createdBy))
+            .orderBy(desc(STUDY_MATERIAL.id));
 
       
         if (result.length === 0) {

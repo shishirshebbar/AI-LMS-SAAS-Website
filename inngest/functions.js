@@ -1,8 +1,9 @@
 import { db } from "@/utils/database";
-import { USER } from "@/utils/dbschema";
+import { NOTES, STUDY_MATERIAL, USER } from "@/utils/dbschema";
 import { eq } from "drizzle-orm";
 import React from "react";
 import { inngest } from "./client";
+import { chaptercontent } from "@/utils/GeminiAI";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -37,4 +38,38 @@ export const CreateNewUser=inngest.createFunction(
     //send welcome notification
 
     //send notifiacation after three days
+)
+
+export const GenerateNotes = inngest.createFunction(
+    {id:'generate-course'},
+    {event:'notes.generate'},
+    async({event,step})=>{
+        const {course}  = event.data;//collect info
+        //generate notes
+        const notes = await step.run('Generate chapter notes',async()=>{
+            const Chapters = course?.courseLayout?.chapters;
+            let index=0;
+            Chapters.forEach(async(chapter)=>{
+                    const Prompt = 'Generate study material for each chapter ,include all topics in the content,provide output in HTML format(do not include any tags such as head tag,body tag, HTML tag,title tag),The chapters are: '+JSON.stringify(chapter);
+                    const result = await chaptercontent.sendMessage(Prompt);
+                    const response=result.response.text();
+                    await db.insert(NOTES).values({
+                        chapterId:index,
+                        courseId:course?.courseId,
+                        notes:response
+                    })
+                    index=index+1;
+
+                })
+                return 'Completed'
+        })
+
+        //change status from generating to ready
+        const updatestatus=await step.run('Update Course Status to ready',async()=>{
+            const result = await db.update(STUDY_MATERIAL).set({
+                status:'Ready'
+            }).where(eq(STUDY_MATERIAL.courseId,course?.courseId))
+            return 'Success';
+        })
+    }
 )
