@@ -1,14 +1,15 @@
 "use client"
+import { Coursecount } from '@/app/_context/Coursecount'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { DollarSign,  PanelLeftDashed, UserCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useContext } from 'react'
 
 function Sidebar() {
-    
+    const {totalcourses,settotalcourses} = useContext(Coursecount);
     const menu=[
         {
             name:'Workspace',
@@ -48,9 +49,9 @@ function Sidebar() {
                 </div>
             </div>
             <div className='border p-5 bg-slate-100 rounded-lg absolute bottom-10 w-[85%]'>
-                <h2 className='text-lg'>Credit balance: 5</h2>
-                <Progress value={30}/>
-                <h2 className='text-sm'>1 out of 5 credits  left</h2>
+                <h2 className='text-lg'>Credit balance: {(5-totalcourses)}</h2>
+                <Progress value={(totalcourses/5)*100}/>
+                <h2 className='text-sm'>{totalcourses} out of 5 credits  left</h2>
                 <Link href={'/Dashboard/Advance'} className='text-primary text-m mt-5'>Level up to do more.</Link>
             </div>
         </div>

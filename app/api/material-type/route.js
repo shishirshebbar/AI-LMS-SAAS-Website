@@ -1,6 +1,6 @@
 import { db } from "@/utils/database";
 import { NOTES, STUDY_TYPE_TABLE } from "@/utils/dbschema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -15,8 +15,8 @@ console.log("Found cards:", cards);
         const result ={
             notes:notes,
             cards:contentlist?.find(item=>item.type=="cards"),
-            test:null,
-            qa:null
+            test:contentlist?.find(item=>item.type=="test"),
+            qa:contentlist?.find(item=>item.type=="qa")
         }
         return NextResponse.json(result);
     
@@ -27,5 +27,13 @@ console.log("Found cards:", cards);
         const notes = await db.select().from(NOTES).where(eq(NOTES?.courseId,courseId))
         return NextResponse.json(notes);
     
+    }
+    else{
+        const result = await db.select().from(STUDY_TYPE_TABLE)
+        .where(and(eq(STUDY_TYPE_TABLE?.courseId,courseId),
+        eq(STUDY_TYPE_TABLE.type,studyType)))
+        
+        return NextResponse.json(result[0]);
+
     }
 }

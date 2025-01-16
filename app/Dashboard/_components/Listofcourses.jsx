@@ -2,16 +2,18 @@
 
 import { useUser } from '@clerk/nextjs'
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Item from './Item';
 import { Button } from '@/components/ui/button';
 import { RefreshCcw } from 'lucide-react';
+import { Coursecount } from '@/app/_context/Coursecount';
 
 function Listofcourses() {
 
     const {user} = useUser();
     const [courselist,setcourselist] =useState([]);
     const [loading,setloading]=useState(false);
+    const {totalcourses,settotalcourses} = useContext(Coursecount)
     useEffect(()=>{
         user&&GetList();
     },[user])
@@ -26,6 +28,7 @@ function Listofcourses() {
     
             console.log(result);
             setcourselist(result.data.result);
+            settotalcourses(result.data.result?.length)
         } catch (error) {
             if (error.response) {
                 console.error('Response Error:', error.response.data);

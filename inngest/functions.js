@@ -3,7 +3,7 @@ import { NOTES, STUDY_MATERIAL, STUDY_TYPE_TABLE, USER } from "@/utils/dbschema"
 import { eq } from "drizzle-orm";
 import React from "react";
 import { inngest } from "./client";
-import { chaptercontent, GenerateStudyType } from "@/utils/GeminiAI";
+import { chaptercontent, generatequiz, GenerateStudyType } from "@/utils/GeminiAI";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -80,8 +80,11 @@ export const GenerateTypeContent = inngest.createFunction(
     {event:'studyType.content'},
     async({event,step})=>{
         const {studyType,prompt,courseId,recordId} = event.data;
-        const flashcardairesult = await step.run('Generating Flashcard using AI',async()=>{
-            const result = await GenerateStudyType.sendMessage(prompt);
+        const airesult = await step.run('Generating Flashcard using AI',async()=>{
+            const result =
+            studyType=="cards"?
+            await GenerateStudyType.sendMessage(prompt):
+            await generatequiz.sendMessage(prompt);
             const airesult =JSON.parse(result.response.text());
             return airesult
         })
@@ -89,7 +92,7 @@ export const GenerateTypeContent = inngest.createFunction(
         const dbresult =await step.run('Save result to DB',async()=>{
             const result = await db.update(STUDY_TYPE_TABLE).set({
                     
-                content:flashcardairesult,
+                content:airesult,
                 status:'Ready'
             }).where(eq(STUDY_TYPE_TABLE.id,recordId))
             return "Data inserted"

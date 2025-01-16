@@ -86,6 +86,24 @@ const {
         },
       ],
     })
+
+    export const generatequiz = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: "generate quiz on the topic C# with question  and options along with correct answer in JSON format"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "```json\n{\n  \"quizTitle\": \"C# Programming Quiz\",\n  \"questions\": [\n    {\n      \"questionId\": 1,\n      \"questionText\": \"Which keyword is used to declare a constant in C#?\",\n      \"options\": [\n        \"a) static\",\n        \"b) const\",\n        \"c) readonly\",\n        \"d) final\"\n      ],\n      \"correctAnswer\": \"b\"\n    },\n    {\n      \"questionId\": 2,\n       \"questionText\": \"What is the purpose of the 'using' statement in C#?\",\n      \"options\": [\n        \"a) To define a new namespace.\",\n        \"b) To import a namespace for easier access to its members.\",\n        \"c) To create a class alias.\",\n        \"d) To declare a variable.\"\n      ],\n       \"correctAnswer\": \"b\"\n    },\n     {\n      \"questionId\": 3,\n      \"questionText\": \"Which data type is used to represent a single character in C#?\",\n      \"options\": [\n        \"a) string\",\n        \"b) char\",\n         \"c) character\",\n        \"d) text\"\n      ],\n       \"correctAnswer\": \"b\"\n    },\n    {\n      \"questionId\": 4,\n      \"questionText\": \"What is the role of the 'virtual' keyword in C#?\",\n      \"options\": [\n        \"a) It prevents inheritance.\",\n        \"b) It makes a method static.\",\n        \"c) It allows a method to be overridden in a derived class.\",\n        \"d) It defines a constant value.\"\n      ],\n      \"correctAnswer\": \"c\"\n    },\n    {\n      \"questionId\": 5,\n      \"questionText\": \"Which of the following is NOT a valid access modifier in C#?\",\n      \"options\": [\n        \"a) public\",\n        \"b) private\",\n        \"c) protected\",\n         \"d) internal_only\"\n      ],\n      \"correctAnswer\": \"d\"\n    },\n    {\n      \"questionId\": 6,\n      \"questionText\": \"What is the purpose of the 'finally' block in a try-catch-finally statement?\",\n        \"options\": [\n          \"a) It handles the exception if it occurs.\",\n          \"b) It always executes after the try block, whether or not an exception is thrown.\",\n           \"c) It allows the program to terminate.\",\n          \"d) It is optional and does not perform any action.\"\n        ],\n      \"correctAnswer\": \"b\"\n    },\n    {\n       \"questionId\": 7,\n       \"questionText\": \"What is the purpose of the 'sealed' keyword in C#?\",\n        \"options\": [\n          \"a) It allows a class to be inherited.\",\n           \"b) It prevents a class from being inherited.\",\n          \"c) It creates an abstract class.\",\n          \"d) It creates a static class.\"\n        ],\n        \"correctAnswer\": \"b\"\n    },\n     {\n      \"questionId\": 8,\n      \"questionText\": \"What is boxing in C#?\",\n        \"options\": [\n          \"a) Converting a value type to a reference type.\",\n          \"b) Converting a reference type to a value type.\",\n          \"c) Creating a new object.\",\n           \"d) Deleting memory\"\n        ],\n        \"correctAnswer\": \"a\"\n      },\n       {\n       \"questionId\": 9,\n       \"questionText\": \"Which of these is a correct way to write a single-line comment in C#?\",\n       \"options\": [\n          \"a) // This is a comment\",\n          \"b) /* This is a comment */\",\n          \"c) -- This is a comment\",\n         \"d) # This is a comment\"\n        ],\n      \"correctAnswer\": \"a\"\n      },\n     {\n        \"questionId\": 10,\n        \"questionText\": \"What does LINQ stand for in C#?\",\n        \"options\": [\n          \"a) Language Integrated Number Query\",\n          \"b) Language Independent Navigation Query\",\n          \"c) Language Integrated Query\",\n          \"d) Logic and Input Navigator Query\"\n         ],\n        \"correctAnswer\": \"c\"\n     }\n  ]\n}\n```\n"},
+          ],
+        },
+      ],
+    });
     // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
     // console.log(result.response.text());
 

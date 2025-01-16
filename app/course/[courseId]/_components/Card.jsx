@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 
 function Card({ item, content, course, refreshData }) {
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const {toast} = useToast();
 
   // Debugging logs
   console.log("Card Component - Item Type:", item.type);
@@ -42,15 +42,26 @@ function Card({ item, content, course, refreshData }) {
   // Check if content exists and has items
   const hasContent = (() => {
     const typeContent = content?.[item.type];
+    
+    // Debugging: Log the structure of the content for this type
+    console.log(`Checking content for type: ${item.type}`, typeContent);
+  
     if (!typeContent) return false; // No content for this type
+  
+    // For cards: Check if 'content' is a non-empty array
     if (item.type === "cards") {
-      // Handle cards: Check nested `content` array
       return Array.isArray(typeContent.content) && typeContent.content.length > 0;
-    } else {
-      // Handle other types (e.g., notes): Check if it's an array
-      return Array.isArray(typeContent) && typeContent.length > 0;
     }
+  
+    // For test: Check if 'content' is a non-empty object (or other specific condition)
+    if (item.type === "test") {
+      return typeContent.content && Object.keys(typeContent.content).length > 0;
+    }
+  
+    // Handle other types (e.g., notes): Check if it's an array
+    return Array.isArray(typeContent) && typeContent.length > 0;
   })();
+  
 
   return (
     <Link  href={'/course/'+course?.courseId+item.route}>
@@ -77,7 +88,7 @@ function Card({ item, content, course, refreshData }) {
         </Button>
       )}
     </div>
-    </Link>
+     </Link>
   );
 }
 

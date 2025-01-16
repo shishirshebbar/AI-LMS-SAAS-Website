@@ -24,14 +24,14 @@ function StudyMaterial({courseId,course}) {
       title:'Test',
       description:'Test your knowledge',
       image:'/quiz.jpg',
-      route:'/quiz',
+      route:'/test',
       type:'test'
     },
     {
       title:'Q&A',
       description:'Study our Q&As',
-      image:'/quiz.jpg',
-      route:'/quiz',
+      image:'/q&A.jpg',
+      route:'/qa',
       type:'qa'
     }
   ]
