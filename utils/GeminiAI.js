@@ -68,6 +68,24 @@ const {
         },
       ],
     });
+
+   export  const GenerateStudyType = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: "generate the flashcards on the topic:Data Science in JSON format with front back content maximum 15"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "```json\n[\n  {\n    \"front\": \"What is Data Science?\",\n    \"back\": \"An interdisciplinary field that uses scientific methods, processes, algorithms, and systems to extract knowledge and insights from structured and unstructured data.\"\n  },\n   {\n    \"front\": \"Name the key steps in the Data Science process.\",\n    \"back\": \"1. Problem Definition\\n2. Data Collection\\n3. Data Cleaning & Preprocessing\\n4. Exploratory Data Analysis (EDA)\\n5. Model Building\\n6. Model Evaluation\\n7. Deployment & Monitoring\"\n  },\n   {\n    \"front\": \"What is Machine Learning?\",\n    \"back\": \"A subset of AI that allows computers to learn from data without explicit programming, enabling predictions or decisions.\"\n  },\n  {\n    \"front\": \"Differentiate between supervised and unsupervised learning.\",\n    \"back\": \"Supervised learning uses labeled data, while unsupervised learning uses unlabeled data to find patterns.\"\n   },\n    {\n      \"front\":\"What is Deep Learning?\",\n      \"back\":\"A subfield of machine learning using artificial neural networks with multiple layers to extract complex patterns.\"\n    },\n   {\n    \"front\": \"What is Feature Engineering?\",\n    \"back\": \"The process of selecting, transforming, and creating relevant features from raw data to improve model performance.\"\n    },\n   {\n    \"front\": \"Define Exploratory Data Analysis (EDA).\",\n    \"back\": \"The process of using visualizations and summary statistics to explore data, discover patterns, and identify anomalies.\"\n   },\n  {\n    \"front\": \"What is the purpose of Data Visualization?\",\n    \"back\": \"To communicate data insights effectively through charts, graphs, and other visual representations.\"\n    },\n  {\n     \"front\": \"What is a Confusion Matrix?\",\n    \"back\": \"A table that summarizes the performance of a classification model by showing the counts of true positives, true negatives, false positives, and false negatives.\"\n  },\n  {\n    \"front\": \"Name two common Python libraries for Data Science.\",\n    \"back\": \"Pandas (for data manipulation) and NumPy (for numerical computation)\"\n  },\n  {\n     \"front\": \"What is a regression problem?\",\n     \"back\":\"A type of supervised learning problem where the goal is to predict a continuous numerical value.\"\n  },\n  {\n    \"front\": \"What is a classification problem?\",\n    \"back\": \"A type of supervised learning problem where the goal is to predict a categorical label or class.\"\n  },\n  {\n    \"front\": \"What is overfitting?\",\n    \"back\": \"When a model learns the training data too well, including noise, and performs poorly on unseen data.\"\n   },\n  {\n      \"front\":\"What is cross-validation?\",\n      \"back\":\"A technique for evaluating a model's performance by splitting the data into multiple folds and training/testing iteratively.\"\n   },\n    {\n     \"front\":\"What is Data Wrangling?\",\n     \"back\":\"The process of transforming and mapping data from one raw data format to another format for ease of use.\"\n    }\n\n]\n```\n"},
+          ],
+        },
+      ],
+    })
     // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
     // console.log(result.response.text());
 

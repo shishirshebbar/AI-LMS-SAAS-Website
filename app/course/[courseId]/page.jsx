@@ -26,10 +26,10 @@ function Course() {
   return (
     <div>
 
-        <Header/>
-        <div className='mx-10 md:mx-36 lg:px-60 mt-10'>
+      
+        <div >
             <Intro course={course}/>
-            <StudyMaterial courseId={courseId}/>
+            <StudyMaterial courseId={courseId} course={course}/>
             <List course={course}/>
 
         </div>

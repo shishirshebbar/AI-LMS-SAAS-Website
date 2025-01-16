@@ -30,13 +30,10 @@ function Sidebar() {
     const path = usePathname();
     return (
         <div className='h-screen shadow-md '>
-            <div className='flex gap-2 items-center'>
-                <Image src={'/weblogo.png'} alt ='lopo' className='ml-3 mt-2' width ={60} height={60}/>
-                <h2 className='font-bold text-2xl '>EduAI </h2>
-            </div>
+            
             <div className='mt-5'>
                 <Link href={'/create'} className='w-full'>
-                                <Button className="w-full rounded-lg ">
+                                <Button className="w-full rounded-lg mt-5 ">
                     Create new
                 </Button>
                 </Link>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
 import axios from 'axios'
+import Link from 'next/link';
 
-function StudyMaterial({courseId}) {
+function StudyMaterial({courseId,course}) {
   const [content,setcontent] =useState();
   const material = [
     {
@@ -50,7 +51,9 @@ function StudyMaterial({courseId}) {
       <h2 className='font-medium text-xl text-center'>Study Material</h2>
       <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
         {material.map((item,index)=>(
-          <Card item={item} key={index} content={content}/>
+          // <Link key={index} href={'/course/'+courseId+item.route}>
+          <Card item={item} key={index} content={content} course={course} refreshData={Getmaterial}/>
+          // </Link>
         ))}
       </div>
     </div>

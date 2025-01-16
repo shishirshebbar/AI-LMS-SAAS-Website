@@ -1,9 +1,9 @@
 import { db } from "@/utils/database";
-import { NOTES, STUDY_MATERIAL, USER } from "@/utils/dbschema";
+import { NOTES, STUDY_MATERIAL, STUDY_TYPE_TABLE, USER } from "@/utils/dbschema";
 import { eq } from "drizzle-orm";
 import React from "react";
 import { inngest } from "./client";
-import { chaptercontent } from "@/utils/GeminiAI";
+import { chaptercontent, GenerateStudyType } from "@/utils/GeminiAI";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -50,7 +50,7 @@ export const GenerateNotes = inngest.createFunction(
             const Chapters = course?.courseLayout?.chapters;
             let index=0;
             Chapters.forEach(async(chapter)=>{
-                    const Prompt = 'Generate study material for each chapter ,include all topics in the content,provide output in HTML format(do not include any tags such as head tag,body tag, HTML tag,title tag),The chapters are: '+JSON.stringify(chapter);
+                    const Prompt = 'Generate study material for each chapter ,ensure it includes all topic pints in the content,ensure to provide content in HTML format(do not include any tags such as head tag,body tag, HTML tag,title tag,/n tag),let the format be chapter no,chapter title and followed by summary .The chapters are: '+JSON.stringify(chapter);
                     const result = await chaptercontent.sendMessage(Prompt);
                     const response=result.response.text();
                     await db.insert(NOTES).values({
@@ -70,6 +70,29 @@ export const GenerateNotes = inngest.createFunction(
                 status:'Ready'
             }).where(eq(STUDY_MATERIAL.courseId,course?.courseId))
             return 'Success';
+        })
+    }
+)
+
+
+export const GenerateTypeContent = inngest.createFunction(
+    {id:'Genrate Study Type Content'},
+    {event:'studyType.content'},
+    async({event,step})=>{
+        const {studyType,prompt,courseId,recordId} = event.data;
+        const flashcardairesult = await step.run('Generating Flashcard using AI',async()=>{
+            const result = await GenerateStudyType.sendMessage(prompt);
+            const airesult =JSON.parse(result.response.text());
+            return airesult
+        })
+        //save the result
+        const dbresult =await step.run('Save result to DB',async()=>{
+            const result = await db.update(STUDY_TYPE_TABLE).set({
+                    
+                content:flashcardairesult,
+                status:'Ready'
+            }).where(eq(STUDY_TYPE_TABLE.id,recordId))
+            return "Data inserted"
         })
     }
 )

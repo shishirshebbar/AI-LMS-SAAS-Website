@@ -27,3 +27,11 @@ export const NOTES = pgTable('notes',{
     chapterId:integer().notNull(),
     notes:text()
 })
+
+export const STUDY_TYPE_TABLE=pgTable('studyTypeContent',{
+    id:serial().primaryKey(),
+    courseId:varchar().notNull(),
+    content:json(),
+    type:varchar().notNull(),
+    status:varchar().default('Generating')
+})
