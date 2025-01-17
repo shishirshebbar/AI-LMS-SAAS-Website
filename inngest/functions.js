@@ -3,7 +3,7 @@ import { NOTES, STUDY_MATERIAL, STUDY_TYPE_TABLE, USER } from "@/utils/dbschema"
 import { eq } from "drizzle-orm";
 import React from "react";
 import { inngest } from "./client";
-import { chaptercontent, generatequiz, GenerateStudyType } from "@/utils/GeminiAI";
+import { chaptercontent, Generateqa, generatequiz, GenerateStudyType } from "@/utils/GeminiAI";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -76,26 +76,40 @@ export const GenerateNotes = inngest.createFunction(
 
 
 export const GenerateTypeContent = inngest.createFunction(
-    {id:'Genrate Study Type Content'},
-    {event:'studyType.content'},
-    async({event,step})=>{
-        const {studyType,prompt,courseId,recordId} = event.data;
-        const airesult = await step.run('Generating Flashcard using AI',async()=>{
+    { id: 'Generate Study Type Content' },
+    { event: 'studyType.content' },
+    async ({ event, step }) => {
+        const { studyType, prompt, courseId, recordId } = event.data;
+
+        // Generate content based on studyType
+        const airesult = await step.run('Generating content using AI', async () => {
             const result =
-            studyType=="cards"?
-            await GenerateStudyType.sendMessage(prompt):
-            await generatequiz.sendMessage(prompt);
-            const airesult =JSON.parse(result.response.text());
-            return airesult
-        })
-        //save the result
-        const dbresult =await step.run('Save result to DB',async()=>{
+                studyType === "cards" ?
+                    await GenerateStudyType.sendMessage(prompt) :
+                studyType === "test" ?
+                    await generatequiz.sendMessage(prompt) :
+                studyType === "qa" ?
+                    await Generateqa.sendMessage(prompt) :
+                    null;
+
+            if (!result) {
+                throw new Error(`Unsupported studyType: ${studyType}`);
+            }
+
+            const airesult = JSON.parse(result.response.text());
+            return airesult;
+        });
+
+        // Save the result to the database
+        const dbresult = await step.run('Save result to DB', async () => {
             const result = await db.update(STUDY_TYPE_TABLE).set({
-                    
-                content:airesult,
-                status:'Ready'
-            }).where(eq(STUDY_TYPE_TABLE.id,recordId))
-            return "Data inserted"
-        })
+                content: airesult,
+                status: 'Ready'
+            }).where(eq(STUDY_TYPE_TABLE.id, recordId));
+
+            return "Data inserted";
+        });
+
+        return dbresult;
     }
-)
+);
