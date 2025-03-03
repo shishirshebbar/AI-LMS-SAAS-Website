@@ -50,9 +50,9 @@ function Sidebar() {
 
             </div>
             <div className='border p-5 bg-slate-100 rounded-lg absolute bottom-10 w-[85%]'>
-                <h2 className='text-lg'>Credit balance: {(5-totalcourses)}</h2>
+                <h2 className='text-lg'>Credit balance: {(10-totalcourses)}</h2>
                 <Progress value={(totalcourses/5)*100}/>
-                <h2 className='text-sm'>{totalcourses} out of 5 credits  left</h2>
+                <h2 className='text-sm'>{(10-totalcourses)} out of 10 credits  left</h2>
                 <Link href={'/Dashboard/Advance'} className='text-primary text-m mt-5'>Level up to do more.</Link>
             </div>
         </div>
