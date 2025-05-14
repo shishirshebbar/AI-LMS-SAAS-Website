@@ -38,6 +38,7 @@ function Listofcourses() {
                 console.error('Error:', error.message);
             }
             alert('Something went wrong while fetching courses. Please try again later.');
+            console.log("No")
         } finally {
             setloading(false);
         }

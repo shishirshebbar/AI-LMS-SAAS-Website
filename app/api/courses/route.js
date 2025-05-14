@@ -1,7 +1,7 @@
 import { db } from "@/utils/database";
 import { STUDY_MATERIAL } from "@/utils/dbschema";
 import { NextResponse } from "next/server";
-import { desc, eq } from "drizzle-orm";  // Make sure to import eq if using Drizzle ORM
+import { desc, eq } from "drizzle-orm";  
 
 export async function POST(req) {
     try {
